@@ -4,13 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.todo.composables.AppHeader
+import com.example.todo.composables.InfoTask
+import com.example.todo.ui.theme.Gray300
 import com.example.todo.ui.theme.TodoTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,30 +33,100 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TodoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            TodoTheme(dynamicColor = false) {
+                TodoApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun TodoApp(modifier: Modifier = Modifier) {
+
+    var task = emptyList<Int>()
+
+    Scaffold(
+        topBar = {
+            AppHeader(modifier = Modifier.statusBarsPadding())
+        }
+    ) { innerPedding ->
+        Surface(
+            modifier
+                .padding(innerPedding)
+                .padding(top = 20.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+
+            Column {
+
+                InfoTask(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp)
+                        .padding(horizontal = 24.dp)
+                )
+                LazyColumn {
+
+                    if (task.isEmpty()) {
+
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp, vertical = 48.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    modifier = Modifier.size(54.dp),
+                                    painter = painterResource(id = R.drawable.clipboard),
+                                    contentDescription = null
+                                )
+                                Spacer(modifier = Modifier.padding(top = 16.dp))
+                                Text(
+                                    text = "Você ainda não tem tarefas cadastradas",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = Gray300
+                                )
+                                Text(
+                                    text = "Crie tarefas e organize seus itens a fazer",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    color = Gray300
+                                )
+                            }
+                        }
+
+                    } else {
+
+                        items(task) {
+
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun TodoAppLightPreview() {
+    TodoTheme(
+        dynamicColor = false,
+        darkTheme = false
+    ) {
+        TodoApp()
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    TodoTheme {
-        Greeting("Android")
+private fun TodoAppDarkPreview() {
+    TodoTheme(
+        dynamicColor = false,
+        darkTheme = true
+    ) {
+        TodoApp()
     }
 }
