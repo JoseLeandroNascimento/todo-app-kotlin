@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todo.composables.AppHeader
 import com.example.todo.composables.InfoTask
+import com.example.todo.composables.TaskCardItem
+import com.example.todo.data.Task
 import com.example.todo.ui.theme.Gray300
 import com.example.todo.ui.theme.TodoTheme
 
@@ -43,7 +47,57 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TodoApp(modifier: Modifier = Modifier) {
 
-    var task = emptyList<Int>()
+    var task = listOf<Task>(
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        ),
+        Task(
+            name = "Integer urna interdum massa libero auctor neque turpis turpis semper.",
+            completed = false
+        )
+
+    )
 
     Scaffold(
         topBar = {
@@ -65,46 +119,55 @@ fun TodoApp(modifier: Modifier = Modifier) {
                         .padding(top = 32.dp)
                         .padding(horizontal = 24.dp)
                 )
-                LazyColumn {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 20.dp)
+                ) {
 
                     if (task.isEmpty()) {
 
                         item {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 20.dp, vertical = 48.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Image(
-                                    modifier = Modifier.size(54.dp),
-                                    painter = painterResource(id = R.drawable.clipboard),
-                                    contentDescription = null
-                                )
-                                Spacer(modifier = Modifier.padding(top = 16.dp))
-                                Text(
-                                    text = "Você ainda não tem tarefas cadastradas",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = Gray300
-                                )
-                                Text(
-                                    text = "Crie tarefas e organize seus itens a fazer",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Gray300
-                                )
-                            }
+                            PlaceholderListEmpty()
                         }
 
                     } else {
 
-                        items(task) {
-
+                        items(task) { task ->
+                            TaskCardItem(task = task)
                         }
                     }
                 }
             }
 
         }
+    }
+}
+
+
+@Composable
+fun PlaceholderListEmpty(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            modifier = Modifier.size(54.dp),
+            painter = painterResource(id = R.drawable.clipboard),
+            contentDescription = null
+        )
+        Spacer(modifier = Modifier.padding(top = 16.dp))
+        Text(
+            text = "Você ainda não tem tarefas cadastradas",
+            style = MaterialTheme.typography.titleMedium,
+            color = Gray300
+        )
+        Text(
+            text = "Crie tarefas e organize seus itens a fazer",
+            style = MaterialTheme.typography.titleSmall,
+            color = Gray300
+        )
     }
 }
 
