@@ -22,6 +22,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +38,13 @@ import com.example.todo.ui.theme.Gray700
 import com.example.todo.ui.theme.TodoTheme
 
 @Composable
-fun AppHeader(modifier: Modifier = Modifier) {
+fun AppHeader(
+    modifier: Modifier = Modifier,
+    onNewTask:(String)-> Unit
+) {
+
+    var name by remember { mutableStateOf("") }
+
     Box(
         modifier = modifier
             .background(color = Gray700)
@@ -50,29 +60,38 @@ fun AppHeader(modifier: Modifier = Modifier) {
             Image(painter = painterResource(R.drawable.logo), contentDescription = null)
 
             Row(
-                modifier = Modifier.offset(y = 20.dp).padding(horizontal = 24.dp),
+                modifier = Modifier
+                    .offset(y = 20.dp)
+                    .padding(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.height(54.dp).weight(1f),
+                    modifier = Modifier
+                        .height(54.dp)
+                        .weight(1f),
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.background,
                         unfocusedContainerColor = MaterialTheme.colorScheme.background,
                         disabledContainerColor = MaterialTheme.colorScheme.background,
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
                     ),
                     shape = RoundedCornerShape(6.dp),
-                    value = "",
+                    value = name,
                     placeholder = {
                         Text(
                             text = stringResource(id = R.string.label_add_task)
                         )
                     },
-                    onValueChange = {}
+                    onValueChange = { name = it}
                 )
                 Button(
                     modifier = Modifier.size(54.dp),
-                    onClick = {},
+                    onClick = {
+                        onNewTask(name)
+                        name = ""
+                    },
                     shape = RoundedCornerShape(6.dp),
                     contentPadding = PaddingValues(0.dp)
                 ) {
@@ -95,7 +114,7 @@ private fun AppHeaderLightPreview() {
         dynamicColor = false,
         darkTheme = false
     ) {
-        AppHeader()
+        AppHeader(onNewTask = {})
     }
 }
 
@@ -106,7 +125,7 @@ private fun AppHeaderDarkPreview() {
         dynamicColor = false,
         darkTheme = true
     ) {
-        AppHeader()
+        AppHeader(onNewTask = {})
     }
 }
 

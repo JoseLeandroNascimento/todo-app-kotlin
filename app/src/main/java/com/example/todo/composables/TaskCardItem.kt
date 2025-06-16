@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.todo.data.Task
 import com.example.todo.ui.theme.Gray300
@@ -25,7 +28,9 @@ import com.example.todo.ui.theme.Gray500
 @Composable
 fun TaskCardItem(
     modifier: Modifier = Modifier,
-    task: Task
+    task: Task,
+    onDelete: (Int) -> Unit,
+    onChangeStatusCompleted: (Boolean) -> Unit
 ) {
 
     Card(
@@ -46,17 +51,24 @@ fun TaskCardItem(
                     unselectedColor = MaterialTheme.colorScheme.primary,
                 ),
                 selected = task.completed,
-                onClick = {}
+                onClick = {
+                    onChangeStatusCompleted(!task.completed)
+                }
             )
 
             Text(
                 modifier = Modifier.weight(1f),
                 text = task.name,
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.White
+                textDecoration = if (task.completed) {
+                    TextDecoration.LineThrough
+                } else {
+                    TextDecoration.None
+                },
+                color = Color.White,
             )
 
-            IconButton(onClick = {}) {
+            IconButton(onClick = { onDelete(task.id) }) {
                 Icon(
                     imageVector = Icons.Default.DeleteOutline,
                     contentDescription = null,
