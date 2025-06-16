@@ -24,7 +24,11 @@ import com.example.todo.ui.theme.Purple40
 import com.example.todo.ui.theme.TodoTheme
 
 @Composable
-fun InfoTask(modifier: Modifier = Modifier) {
+fun InfoTask(
+    modifier: Modifier = Modifier,
+    totalTasks: Int = 0,
+    totalCompleted: Int = 0
+) {
 
     Surface(
         modifier = modifier,
@@ -56,7 +60,7 @@ fun InfoTask(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "0",
+                            text = totalTasks.toString(),
                             style = MaterialTheme.typography.labelSmall,
                             color = Color.White
                         )
@@ -79,7 +83,7 @@ fun InfoTask(modifier: Modifier = Modifier) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "0",
+                            text = totalCompleted.toString(),
                             style = MaterialTheme.typography.labelSmall,
                             color = Color.White
                         )

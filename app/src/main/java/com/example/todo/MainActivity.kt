@@ -4,6 +4,7 @@ package com.example.todo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,11 +21,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,6 +73,9 @@ fun TodoApp(
 
     var tasks by remember { mutableStateOf(emptyList<Task>()) }
 
+    val totalTask by remember { derivedStateOf { tasks.size } }
+    val tasksCompleted by remember { derivedStateOf { tasks.count { it.completed } } }
+
     LaunchedEffect(Unit) {
         tasks = dao.findAll()
     }
@@ -79,9 +87,10 @@ fun TodoApp(
                     val data = Task(name = it, completed = false)
                     dao.save(data)
                     tasks = dao.findAll()
+                    Toast.makeText(context, "Tarefa salva com sucesso!", Toast.LENGTH_LONG).show()
                 }
             })
-        }
+        },
     ) { innerPedding ->
         Surface(
             modifier
@@ -93,6 +102,8 @@ fun TodoApp(
             Column {
 
                 InfoTask(
+                    totalTasks = totalTask,
+                    totalCompleted = tasksCompleted,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 32.dp)
@@ -119,12 +130,23 @@ fun TodoApp(
                                         dao.delete(idTask)
                                         tasks = dao.findAll()
                                     }
+                                    Toast.makeText(
+                                        context,
+                                        "Tarefa foi deletada!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 },
                                 onChangeStatusCompleted = { completed ->
                                     scope.launch {
                                         dao.update(task.copy(completed = completed))
                                         tasks = dao.findAll()
                                     }
+                                    val message = if (completed) {
+                                        "Tarefa foi concluida"
+                                    } else {
+                                        "Tarefa não foi concluida"
+                                    }
+                                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
                                 }
                             )
                         }
