@@ -21,15 +21,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
-import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todo.composables.AppHeader
@@ -176,10 +174,12 @@ fun PlaceholderListEmpty(modifier: Modifier = Modifier) {
         Text(
             text = "Você ainda não tem tarefas cadastradas",
             style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
             color = Gray300
         )
         Text(
             text = "Crie tarefas e organize seus itens a fazer",
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleSmall,
             color = Gray300
         )
